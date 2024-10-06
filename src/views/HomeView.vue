@@ -26,7 +26,9 @@
 </template>
 
 <script setup lang="ts">
+// @ts-ignore
 import Layout from "@/components/layout.vue";
+// @ts-ignore
 import Input from "@/components/Input.vue";
 import {useSplashyStore} from "@/stores/splashy"
 import { onMounted, ref, watch } from "vue";

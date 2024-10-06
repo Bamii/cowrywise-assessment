@@ -1,3 +1,5 @@
+<script></script>
+
 <template>
   <div class="error-container">
     <div class="text">{{ text || "Application Error" }}</div>
@@ -24,10 +26,3 @@
   }
 }
 </style>
-
-<script>
-export default {
-  name: "ErrorContainer",
-  props: ["text"],
-};
-</script>

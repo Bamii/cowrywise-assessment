@@ -11,8 +11,11 @@
 </template>
 
 <script setup lang="ts">
+// @ts-ignore
 import ErrorContainer from "@/components/Error.vue";
+// @ts-ignore
 import Header from "@/components/Header.vue";
+// @ts-ignore
 import CardList from "@/components/CardList.vue";
 import { type ResponseData } from "@/types"
 
