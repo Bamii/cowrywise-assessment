@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import SearchIcon from "@/components/SearchIcon.vue";
+import SearchIcon from "@/components/icons/SearchIcon.vue";
 
 export default {
   name: "Input",

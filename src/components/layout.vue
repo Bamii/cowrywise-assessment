@@ -1,30 +1,28 @@
 
 <template>
-  <div class="container">
+  <div class="">
     <Header>
       <slot></slot>
     </Header>
 
-    <LoadingList v-if="loading" />
-    <ErrorContainer v-else-if="error" :text="error" />
+    <ErrorContainer v-if="error && (props.list.length == 0 || !props.list)" :text="error" />
     
-    <CardList :loading="loading" :items="props.list" />
+    <CardList :loading="props.loading" :items="props.list" />
     
-    <BottomFeeder />
+    <!-- <BottomFeeder /> -->
   </div>
 </template>
 
 <script setup lang="ts">
 import ErrorContainer from "@/components/Error.vue";
 import Header from "@/components/Header.vue";
-import LoadingList from "@/components/Loading.vue";
+// import LoadingList from "@/components/Loading.vue";
 import CardList from "@/components/CardList.vue";
-import BottomFeeder from "@/components/BottomFeeder.vue";
-import { ref } from "vue";
-import { useSplashyStore } from "@/stores/counter"
-const THROTTLE_TIMEOUT = 5000;
-const BOTTOM_LEEWAY = 200;
-const store = useSplashyStore();
+// import BottomFeeder from "@/components/BottomFeeder.vue";
+// import { ref } from "vue";
+// import { useSplashyStore } from "@/stores/counter"
+
+// const store = useSplashyStore();
 
 const props = defineProps({
   list: Array,

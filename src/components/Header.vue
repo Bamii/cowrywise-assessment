@@ -1,7 +1,8 @@
 <template>
   <div class="header">
-    <!-- item to be displayed... -->
-    <slot></slot>
+    <div class="inner container"> 
+        <slot></slot>
+    </div>
   </div>
 </template>
 
@@ -11,16 +12,21 @@ export default { name: "Header" };
 
 <style lang="scss" scoped>
 .header {
-  padding: 6rem 1.5rem;
   background: var(--gray-light);
-  text-align: left;
+  width: 100%;
 
-  @media (min-width: 600px) and (max-width: 960px) {
-    padding: 7rem 5rem;
-  }
-
-  @media only screen and (min-width: 960px) {
-    padding: 8rem 10rem;
+  .inner {
+    text-align: left;
+    padding: 6rem 0rem;
+    margin: 0 auto;
+    
+    @media (min-width: 600px) and (max-width: 960px) {
+        padding: 7rem 0rem;
+    }
+    
+    @media only screen and (min-width: 960px) {
+        padding: 8rem 0rem;
+    }
   }
 }
 </style>

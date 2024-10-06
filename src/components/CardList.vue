@@ -1,7 +1,7 @@
 <template>
-  <div class="list-container">
-    <div v-if="props.items" class="columns-container">
-      <div class="column" v-for="column in shared_columns" v-bind:key="column">
+  <div class="list-container container">
+    <div class="columns-container">
+      <div class="column" v-for="(column, index) in shared_columns" v-bind:key="column">
         <Card
           v-for="(item, index) in column"
           :key="item.id"
@@ -10,7 +10,10 @@
           @click="() => openPhoto(item)"
         />
 
-        <Card v-if="loading" />
+        <Card v-if="props.loading" :cls="`${['short', 'tall', 'mid'][index]}`" />
+        <Card v-if="props.loading" :cls="`${['mid', 'short', 'mid'][index]}`" />
+        
+        <BottomFeeder />
       </div>
     </div>
   </div>
@@ -31,7 +34,8 @@
   </teleport>
 </template>
 
-<script setup lanng="ts">
+<script setup lang="ts">
+import BottomFeeder from "@/components/BottomFeeder.vue";
 import Card from "@/components/Card.vue";
 import { reactive, onMounted, computed } from "vue"
 
@@ -40,6 +44,7 @@ const props = defineProps({
   loading: Boolean
 })
 
+console.log(getComputedStyle(document.body).getPropertyValue('--columns'))
 const state = reactive({
   columns: parseInt(getComputedStyle(document.body).getPropertyValue('--columns')),
   selected: null,
@@ -55,7 +60,7 @@ function resizer () {
 }
 
 const shared_columns = computed(() => [...new Array(state.columns)]
-    .map((_,index) => props.items
+    .map((_,index) => (props.items ?? [])
         .filter((e, i) => i % state.columns == index)))
   
 function openPhoto(details) {
@@ -67,116 +72,24 @@ function openPhoto(details) {
 <style lang="scss" scoped>
 .list-container {
   width: auto;
+  margin: 0 auto;
   position: relative;
   top: -3rem;
 
-  --columns: 1;
   .columns-container {
     display: grid;
     grid-template-columns: repeat(var(--columns), 1fr);
-    gap: 12px;
+    gap: 2.5rem;
     margin: 0 2rem;
 
     .column {
       display: flex;
       flex-direction: column;
-      margin-right: 2rem;
-      gap: 2rem;
+      /* margin-right: 2rem; */
+      gap: 1.5rem;
 
       &:last-child {
         margin-right: 0;
-      }
-    }
-  }
-
-  @media only screen and (min-width: 960px) {
-      --columns: 3;
-    
-    .columns-container {
-      margin: 0 13.5rem;
-    }
-  }
-
-  @media (min-width: 600px) and (max-width: 960px) {
-      --columns: 2;
-    .columns-container {
-      margin: 0 7rem;
-    }
-  }
-}
-
-.modal-mask {
-  position: fixed;
-  width: 100vw;
-  top: 0;
-  height: 100vh;
-  overflow-y: scroll;
-  background: var(--opaque-black);
-
-  .modal {
-    display: flex;
-    position: relative;
-    flex-direction: column;
-    width: 90%;
-    margin: 6rem auto;
-    border-radius: 1rem;
-
-    .modal-close {
-      position: absolute;
-      top: -3.5rem;
-      width: max-content;
-      right: 0rem;
-      color: white;
-      padding: 0.8rem;
-      border-radius: 0.4rem;
-      cursor: pointer;
-
-      &:hover {
-        background: white;
-        color: var(--blue-dark);
-      }
-    }
-
-    .image-container {
-      width: 100%;
-      min-height: 5rem;
-      background: white;
-      border-radius: 1rem 1rem 0 0;
-
-      img {
-        width: 100%;
-        border-radius: 1rem 1rem 0 0;
-      }
-    }
-
-    .details {
-      background: white;
-      padding: 2rem;
-      border-radius: 0 0 1rem 1rem;
-
-      .detail {
-        padding: 0.2rem 0;
-        color: var(--blue-dark);
-
-        &.name {
-          font-size: 1.7rem;
-        }
-
-        &.location {
-          font-size: 1rem;
-          font-weight: 300;
-        }
-      }
-    }
-  }
-
-  @media only screen and (min-width: 960px) {
-    .modal {
-      width: 70%;
-      margin: 7rem auto;
-
-      .modal-close {
-        right: -5rem;
       }
     }
   }

@@ -1,37 +1,56 @@
 <template>
-  <div v-if="details" class="block card">
-    <img :src="details.urls.small" class="image" alt="" />
+  <div @click="modalOpen = true" v-if="props.details" :class="`block card ` + cls">
+    <img :src="props.details.urls.thumb" class="image" alt="" />
 
     <div class="overlay">
       <div class="details">
-        <div class="name">{{ details.user.name }}</div>
-        <div class="location">{{ details.user.location || "World" }}</div>
+        <div class="name">{{ props.details.user.name }}</div>
+        <div class="location">{{ props.details.user.location || "World" }}</div>
       </div>
     </div>
   </div>
 
-  <div v-else class="block card loader">
+  <div v-else :class="`block card loader ` + cls">
     <div class="lines">
       <div class="line long"></div>
       <div class="line mid"></div>
     </div>
   </div>
+  
+  <teleport to="body">
+    <div v-if="modalOpen" class="modal-mask">
+      <div class="modal">
+        <div @click="modalOpen = false" class="modal-close">X</div>
+        <div class="image-container">
+          <img :src="selectedPhoto?.urls.regular" alt="" />
+        </div>
+        <div class="details">
+          <div class="detail name">{{ selectedPhoto?.user.name }}</div>
+          <div class="detail location">{{ selectedPhoto?.user.location }}</div>
+        </div>
+      </div>
+    </div>
+  </teleport>
 </template>
 
-<script>
-export default {
-  name: "Card",
-  props: ["details", "index"],
-};
+<script setup lang="ts">
+import { ref } from "vue"
+
+const props = defineProps({
+  details: String,
+  index: Number,
+  cls: String
+})
+const modalOpen = ref(false)
+const selectedPhoto = props.details
 </script>
 
 <style lang="scss" scoped>
 .block {
   cursor: pointer;
   break-inside: avoid;
-  /* margin-bottom: 1rem; */
   height: auto;
-  min-height: 2rem;
+  min-height: 6rem;
   position: relative;
   border-radius: 0.5rem;
   min-width: 17rem;
@@ -62,6 +81,11 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
+    background: #f5f5f5;
+    
+    &.tall { height: 20rem }
+    &.mid { height: 14rem }
+    &.short { height: 9rem }
 
     .lines {
       margin: 1rem;
@@ -73,18 +97,10 @@ export default {
         margin: 0.5rem 0;
         animation: blink 1.2s infinite;
 
-        &.full {
-          width: 100%;
-        }
-        &.long {
-          width: 75%;
-        }
-        &.mid {
-          width: 50%;
-        }
-        &.short {
-          width: 25%;
-        }
+        &.full { width: 100% }
+        &.long { width: 75% }
+        &.mid { width: 50% }
+        &.short { width: 25% }
       }
 
       @keyframes blink {
@@ -112,5 +128,82 @@ img {
   overflow: hidden;
   object-fit: cover;
   border-radius: 0.5rem;
+}
+
+.modal-mask {
+  position: fixed;
+  width: 100vw;
+  top: 0;
+  height: 100vh;
+  overflow-y: scroll;
+  background: var(--opaque-black);
+
+  .modal {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    width: 90%;
+    margin: 6rem auto;
+    border-radius: 1rem;
+
+    .modal-close {
+      position: absolute;
+      top: -3.5rem;
+      width: max-content;
+      right: 0rem;
+      color: white;
+      padding: 0.8rem;
+      border-radius: 0.4rem;
+      cursor: pointer;
+
+      &:hover {
+        background: white;
+        color: var(--blue-dark);
+      }
+    }
+
+    .image-container {
+      width: 100%;
+      min-height: 5rem;
+      background: white;
+      border-radius: 1rem 1rem 0 0;
+
+      img {
+        width: 100%;
+        border-radius: 1rem 1rem 0 0;
+      }
+    }
+
+    .details {
+      background: white;
+      padding: 2rem;
+      border-radius: 0 0 1rem 1rem;
+
+      .detail {
+        padding: 0.2rem 0;
+        color: var(--blue-dark);
+
+        &.name {
+          font-size: 1.7rem;
+        }
+
+        &.location {
+          font-size: 1rem;
+          font-weight: 300;
+        }
+      }
+    }
+  }
+
+  @media only screen and (min-width: 960px) {
+    .modal {
+      width: 70%;
+      margin: 7rem auto;
+
+      .modal-close {
+        right: -5rem;
+      }
+    }
+  }
 }
 </style>
