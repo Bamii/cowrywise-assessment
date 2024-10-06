@@ -5,6 +5,7 @@
       @input="$emit('update:value', $event.target.value)"
       :value="value"
       class="search-input"
+      id="search-input"
       type="text"
       placeholder="Search for photo"
     />

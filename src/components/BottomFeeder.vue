@@ -10,19 +10,23 @@ const store = useSplashyStore();
 const id = Date.now()
 
 onMounted(() => {
-  const observer = new IntersectionObserver(
-    (a) => {
-        if (a[0].isIntersecting) {
-          store.load_next_batch();
-        }
-    }, {
-        root: null,
-        rootMargin: "0px",
-        threshold: 1.0,
-    }
-  );
+  const element = document.querySelector("#bottom-feeder-"+id);
   
-  observer.observe(document.querySelector("#bottom-feeder-"+id))
+  if(element) {
+    const observer = new IntersectionObserver(
+      (a) => {
+          if (a[0].isIntersecting) {
+            store.load_next_batch();
+          }
+      }, {
+          root: null,
+          rootMargin: "0px",
+          threshold: 1.0,
+      }
+    );
+    
+    observer.observe(element)
+  }
 })
 </script>
 

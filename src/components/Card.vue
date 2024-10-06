@@ -1,11 +1,11 @@
 <template>
   <div @click="modalOpen = true" v-if="props.details" :class="`block card ` + cls">
-    <img :src="props.details.urls.thumb" class="image" alt="" />
+    <img :src="props.details.urls?.thumb" class="image" alt="" />
 
     <div class="overlay">
       <div class="details">
-        <div class="name">{{ props.details.user.name }}</div>
-        <div class="location">{{ props.details.user.location || "World" }}</div>
+        <div class="name">{{ props.details.user?.name }}</div>
+        <div class="location">{{ props.details.user?.location || "World" }}</div>
       </div>
     </div>
   </div>
@@ -35,14 +35,15 @@
 
 <script setup lang="ts">
 import { ref } from "vue"
+import { type ResponseData } from "@/types"
 
-const props = defineProps({
-  details: String,
-  index: Number,
-  cls: String
-})
+type Props = {
+  details?: ResponseData,
+  cls?: string
+}
+const props = defineProps<Props>()
 const modalOpen = ref(false)
-const selectedPhoto = props.details
+const selectedPhoto = props.details as ResponseData;
 </script>
 
 <style lang="scss" scoped>

@@ -14,9 +14,9 @@
             />
         </form>
 
-        <form @submit.prevent="search" v-show="store.state.current_context != 'default'">
-            <template v-if="loadingList">Searching for </template>
-            <template v-else>Search Results for </template>
+        <form id="search-quote-container" @submit.prevent="search" v-show="store.state.current_context != 'default'">
+            <!-- <template v-if="store.state.">Searching for </template> -->
+            Search Results for
         
             <label id="search_quote_label" for="search_quote">"{{ query }}"</label>
             <input class="search-text" name="search_quote" id="search_quote" v-model="query">
@@ -28,7 +28,7 @@
 <script setup lang="ts">
 import Layout from "@/components/layout.vue";
 import Input from "@/components/Input.vue";
-import {useSplashyStore} from "@/stores/splashy.ts"
+import {useSplashyStore} from "@/stores/splashy"
 import { onMounted, ref, watch } from "vue";
 import { useRouter, useRoute } from 'vue-router'
 
@@ -38,7 +38,7 @@ const route = useRoute();
 const query = ref("")
 
 onMounted(() => {
-  const search = route.query.search;
+  const search = route.query.search as string | null;
 
   (async function() {
       if(search) {
@@ -49,11 +49,11 @@ onMounted(() => {
       }
       
       document.querySelector("#search_quote")?.addEventListener("focus", () => {
-        document.querySelector("#search_quote_label").classList.add("underline")
+        document.querySelector("#search_quote_label")?.classList.add("underline")
       })
     
       document.querySelector("#search_quote")?.addEventListener("blur", () => {
-        document.querySelector("#search_quote_label").classList.remove("underline")
+        document.querySelector("#search_quote_label")?.classList.remove("underline")
       })
   })();
 })
@@ -62,7 +62,7 @@ watch(
   () => route.query.search,
   async search => {
     if(!search) store.load_initial();
-    else store.search(search)
+    else store.search(search as string)
   }
 )
 
