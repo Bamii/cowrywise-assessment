@@ -1,11 +1,11 @@
 
 <template>
   <div class="">
+
     <Header>
       <slot></slot>
     </Header>
-    
-    <ErrorContainer v-if="error && (!props.list || props.list.length == 0)" :text="error" />
+
     <CardList :loading="props.loading" :items="props.list" />
   </div>
 </template>

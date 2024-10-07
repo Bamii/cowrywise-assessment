@@ -55,8 +55,6 @@ export const useSplashyStore = defineStore('counter', () => {
   }
 
   const load_next_batch = async () => {
-    // if (!state.data) return
-
     state.error = null;
     if (state.loading) return;
 
@@ -101,26 +99,25 @@ export const useSplashyStore = defineStore('counter', () => {
   }
 
   const search = async (query: string) => {
-    state.current_context = "search"
-    state.search_text = query;
     state.error = null;
-
     if (state.loading) return;
     state.loading = true;
+    
+    let meta = state.search[query];
+
+    if (meta && meta.data.length > 0) {
+      return;
+    }
+
+    meta = state.search[query] = {
+      total_pages: 0,
+      data: [],
+      page: 1
+    }
+    state.current_context = "search"
+    state.search_text = query;
 
     try {
-      let meta = state.search[query];
-
-      if (meta && meta.data.length > 0) {
-        return;
-      }
-
-      meta = state.search[query] = {
-        total_pages: 0,
-        data: [],
-        page: 1
-      }
-
       return axios
         .get(
           `https://api.unsplash.com/search/photos?client_id=${UNSPLASH_CLIENT_KEY}&page=${1}&query=${query}>`

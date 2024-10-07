@@ -5,18 +5,18 @@
     :error="store.state.error"
   >
     <div class="search-container">
-        <!-- <Transition> -->
         <form v-if="store.state.current_context == 'default'" @submit.prevent="search" class="">
+        <Transition>
             <Input
                 :text="query"
                 :value="query"
                 @update:value="query = $event"
                 :submitter="search"
             />
+        </Transition>
         </form>
-        <!-- </Transition> -->
 
-        <!-- <Transition> -->
+        <Transition>
         <form id="search-quote-container" @submit.prevent="search" v-show="store.state.current_context != 'default'">
             <!-- <template v-if="store.state.">Searching for </template> -->
             Search Results for
@@ -24,7 +24,7 @@
             <label id="search_quote_label" for="search_quote">"{{ query }}"</label>
             <input class="search-text" name="search_quote" id="search_quote" v-model="query">
         </form>
-        <!-- </Transition> -->
+        </Transition>
     </div>
   </Layout>
 </template>
@@ -35,7 +35,7 @@ import Layout from "@/components/layout.vue";
 // @ts-ignore
 import Input from "@/components/Input.vue";
 import {useSplashyStore} from "@/stores/splashy"
-import { onMounted, ref, watch } from "vue";
+import { onMounted, ref, watch, Transition } from "vue";
 import { useRouter, useRoute } from 'vue-router'
 
 let store = useSplashyStore();
@@ -46,6 +46,7 @@ const query = ref("")
 onMounted(() => {
   const search = route.query.search as string | null;
 
+  console.log("mount");
   (async function() {
       if(search) {
         query.value = search;
@@ -64,20 +65,34 @@ onMounted(() => {
   })();
 })
 
-watch(
-  () => route.query.search,
-  async search => {
-    if(!search) store.load_initial();
-    else store.search(search as string)
-  }
-)
+// watch(
+//   () => route.query.search,
+//   async search => {
+//     if(!search) store.load_initial();
+//     else store.search(search as string)
+//   }
+// )
 
 const search = () => {
   router.push({ query: { search: query.value } })
+  
+  if(!query.value) store.load_initial();
+  else store.search(query.value as string)
 }
 </script>
 
 <style lang="scss" scoped>
+/* we will explain what these classes do next! */
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
+
 .search-container {
   font-size: 1.8rem;
   font-weight: 400;

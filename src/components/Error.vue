@@ -1,5 +1,3 @@
-<script></script>
-
 <template>
   <div class="error-container">
     <div class="text">{{ text || "Application Error" }}</div>
@@ -14,15 +12,17 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 2rem 0;
+  background: tomatored;
+  color: white;
+  padding: 0.5rem 0;
+  font-size: 14px;
 
   .text {
-    font-size: 2rem;
-    margin-bottom: 0.4rem;
+    margin-bottom: 0.2rem;
   }
 
   .sub-text {
-    font-size: 1.4rem;
+    font-size: 12px;
   }
 }
 </style>
