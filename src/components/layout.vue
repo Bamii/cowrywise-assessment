@@ -1,6 +1,7 @@
 
 <template>
   <div class="">
+    <ErrorContainer v-if="error" :text="error" />
 
     <Header>
       <slot></slot>

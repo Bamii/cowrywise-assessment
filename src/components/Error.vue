@@ -1,7 +1,7 @@
 <template>
   <div class="error-container">
     <div class="text">{{ text || "Application Error" }}</div>
-    <div class="sub-text">Please try again later.</div>
+    <div class="sub-text">Please reload the page.</div>
   </div>
 </template>
 
