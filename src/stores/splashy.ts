@@ -12,6 +12,7 @@ export const useSplashyStore = defineStore('counter', () => {
     error: null,
     data: null,
     current_page: 0,
+    total_pages: 0,
     current_context: "default", // search, default
     search_text: "",
     // search: new Map(),
@@ -38,7 +39,9 @@ export const useSplashyStore = defineStore('counter', () => {
         `https://api.unsplash.com/search/photos/?client_id=${UNSPLASH_CLIENT_KEY}&page=1&query=African`
       )
       .then((response) => {
-        state.data = Object.values(response.data) as ResponseData[]
+        console.log(response.data)
+        state.data = Object.values(response.data.results) as ResponseData[]
+        state.total_pages = response.data.total_pages;
         state.current_page = 1;
         return response.data;
       })
@@ -58,18 +61,26 @@ export const useSplashyStore = defineStore('counter', () => {
     if (state.loading) return;
 
     state.loading = true;
-    const text = state.current_context == "search" ? state.search_text : "African";
+    const is_search_context = state.current_context == "search";
+    const text = is_search_context ? state.search_text : "African";
 
-    const page = (state.current_context == "search" ? state.search[text].page : state.current_page) + 1
+    let page = (is_search_context ? state.search[text].page : state.current_page)
+    if(is_search_context) {
+      if (state.search[text].total_pages == page) return;
+    } else {
+      if (state.total_pages == page) return;
+    }
+
+    page += 1;
     let url = `https://api.unsplash.com/search/photos/?client_id=${UNSPLASH_CLIENT_KEY}&page=${page}`
     if (text) url += `&query=${text}`
-
     return axios
       .get(url)
       .then((response) => {
-        const data: ResponseData[] = Object.values(response.data);
-        if (state.current_context == "search") {
+        const data: ResponseData[] = Object.values(response.data.results);
+        if (is_search_context) {
           state.search[text] = {
+            ...state.search[text],
             data: [...(state.search[text].data ?? []), ...data],
             page
           }

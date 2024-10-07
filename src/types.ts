@@ -4,6 +4,7 @@ export type State = {
   error: string | null,
   data: ResponseData[] | null,
   current_context: Context,
+  total_pages: number,
   current_page: number,
   search_text: string,
   search: Record<string, SearchData>
@@ -18,6 +19,7 @@ export type ResponseData = {
 export type SearchData = {
   data: ResponseData[],
   page: number,
+  total_pages: number,
 }
 
 export type Context = "default" | "search"
