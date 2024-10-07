@@ -19,7 +19,7 @@ const props = defineProps<Props>()
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: tomatored;
+  background: tomato;
   color: white;
   padding: 0.5rem 0;
   font-size: 14px;
