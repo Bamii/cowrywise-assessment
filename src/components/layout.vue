@@ -22,7 +22,7 @@ import { type ResponseData } from "@/types"
 
 type Props = {
   list: ResponseData[] | null,
-  error: String | null,
+  error: string | null,
   loading: Boolean,
 }
 const props = defineProps<Props>()

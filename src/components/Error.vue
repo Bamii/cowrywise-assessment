@@ -6,7 +6,10 @@
 </template>
 
 <script lang="ts" setup>
-const props = defineProps<{ text: string }>()
+type Props = {
+  text: string
+}
+const props = defineProps<Props>()
 </script>
 
 <style lang="scss" scoped>

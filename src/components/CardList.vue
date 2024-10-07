@@ -31,7 +31,7 @@ type Props = {
 const props = defineProps<Props>()
 const myref = useTemplateRef('column-ref');
 
-const cols = () => getComputedStyle(myref.value).getPropertyValue('--columns');
+const cols = () => getComputedStyle(myref.value!).getPropertyValue('--columns');
 const state = reactive({
   columns: 0,
   selected: null,
