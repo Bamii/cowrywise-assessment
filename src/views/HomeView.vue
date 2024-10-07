@@ -5,6 +5,7 @@
     :error="store.state.error"
   >
     <div class="search-container">
+        <!-- <Transition> -->
         <form v-if="store.state.current_context == 'default'" @submit.prevent="search" class="">
             <Input
                 :text="query"
@@ -13,7 +14,9 @@
                 :submitter="search"
             />
         </form>
+        <!-- </Transition> -->
 
+        <!-- <Transition> -->
         <form id="search-quote-container" @submit.prevent="search" v-show="store.state.current_context != 'default'">
             <!-- <template v-if="store.state.">Searching for </template> -->
             Search Results for
@@ -21,6 +24,7 @@
             <label id="search_quote_label" for="search_quote">"{{ query }}"</label>
             <input class="search-text" name="search_quote" id="search_quote" v-model="query">
         </form>
+        <!-- </Transition> -->
     </div>
   </Layout>
 </template>
