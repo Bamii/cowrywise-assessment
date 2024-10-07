@@ -116,6 +116,7 @@ export const useSplashyStore = defineStore('counter', () => {
       }
 
       meta = state.search[query] = {
+        total_pages: 0,
         data: [],
         page: 1
       }
@@ -127,6 +128,7 @@ export const useSplashyStore = defineStore('counter', () => {
         .then((response) => {
           const data: ResponseData[]  = Object.values(response.data.results);
           state.search[query] = {
+            ...(state.search[query] ?? { total_pages: 0 }),
             data: [...(state.search[query].data ?? []), ...data],
             page: meta.page
           }
