@@ -100,11 +100,8 @@ export const useSplashyStore = defineStore('counter', () => {
 
   const search = async (query: string) => {
     state.error = null;
-    if (state.loading) return;
-    state.loading = true;
     
     let meta = state.search[query];
-
     if (meta && meta.data.length > 0) {
       return;
     }
@@ -114,6 +111,9 @@ export const useSplashyStore = defineStore('counter', () => {
       data: [],
       page: 1
     }
+    
+    if (state.loading) return;
+    state.loading = true;
     state.current_context = "search"
     state.search_text = query;
 
