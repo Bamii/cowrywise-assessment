@@ -1,9 +1,13 @@
 <template>
   <div class="error-container">
-    <div class="text">{{ text || "Application Error" }}</div>
+    <div class="text">{{ props.text || "Application Error" }}</div>
     <div class="sub-text">Please reload the page.</div>
   </div>
 </template>
+
+<script lang="ts" setup>
+const props = defineProps<{ text: string }>()
+</script>
 
 <style lang="scss" scoped>
 .error-container {
